@@ -33,6 +33,10 @@
             outline: 0;
             border: none;
         }
+
+        table {
+            margin-top: 3em;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -40,6 +44,11 @@
     <h1>Home Page</h1>
 
     <button id="getRatesBtn">Get Rates</button>
+
+<p id="error"></p>
+    <table>
+        <tbody id="table-body"></tbody>
+    </table>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script>
@@ -49,9 +58,25 @@
         $("#getRatesBtn").on("click", function () {
 
             $.get("/getRates", function(data, status){
-                console.log("Data: " + data + "\nStatus: " + status);
-            });
 
+                if (status === "success") {
+
+                    if (typeof data === "string") {
+                        $("#error").text(data);
+                        return;
+                    }
+
+                    $("#table-body").html("");
+                    $("#table-body").append("<tr><th>TYPE</th><th>Rates</th></tr>")
+
+                    const forexRatesJson = JSON.parse(data);
+                    const forexRatesKeys = Object.keys(forexRatesJson['forex']);
+
+                    forexRatesKeys.forEach(forexRate => $("#table-body").append(
+                        `<tr><td>${forexRate}</td><td>${forexRatesJson['forex'][forexRate]}</td></tr>`
+                    ));
+                }
+            });
         });
     })
 </script>
