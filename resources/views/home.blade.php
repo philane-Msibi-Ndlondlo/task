@@ -53,7 +53,6 @@
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script>
     $(function () {
-        console.log("Hello Jquery");
 
         $("#getRatesBtn").on("click", function () {
 
